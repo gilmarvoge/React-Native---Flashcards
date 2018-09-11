@@ -1,13 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native'
 import { purple, white } from './src/utils/colors'
 import { Provider } from 'react-redux'
 import store from './src/store/store'
 import { Constants } from 'expo'
-import routes from './src/routes/routes'
+import {MainNavigator} from './src/rotas/rotas'
 
 
-function StatusBar ({backgroundColor, ...props}) {
+
+function AppStatusBar({ backgroundColor, ...props }) {
   return (
     <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -18,15 +19,16 @@ function StatusBar ({backgroundColor, ...props}) {
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-       <View style={{flex: 1}}>
-           <StatusBar backgroundColor={purple} barStyle="light-content" />
-      </View>
-       </Provider>
+    
+        <View style={{ flex: 1 }}>
+          <AppStatusBar backgroundColor={purple} barStyle="light-content" />
+          <MainNavigator />
+        </View>
+     
     );
   }
 }
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,3 +37,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+*/
