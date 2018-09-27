@@ -18,8 +18,10 @@ export default class Deck extends Component {
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.countQuestions}> {questions.length === 1 ? questions.length + ' Card' : questions.length + ' Cards'}</Text>
-      <Button style={styles.addCardBtn}  title="Add Card"/>
-      <Button style={styles.openQuizButton} title="Start Quiz"/>
+        <View style={styles.containerButtons}>
+      <Text style={styles.buttons}>Add Card</Text>
+      <Text style={styles.buttons}>Start Quiz</Text>
+      </View>
       </View>
 
     )
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    alignItems: 'center',
   },
   title: {
     paddingVertical: 15,
@@ -44,26 +47,21 @@ const styles = StyleSheet.create({
     color: gray,
     fontSize: 20,
   },
-  addCardBtn: {
-    color: purple,
+  containerButtons: {
+    margin:50,
+   },
+  buttons: {
+    backgroundColor: purple,
+    color: white,
+    fontSize: 22,
     padding: 10,
     borderRadius: 7,
     height: 45,
-    width: 50,
-   margin:10,
-  },
-  openQuizButton: {
-    backgroundColor: black,
-    padding: 20,
-    minWidth: '90%',
-    alignItems: 'center',
-    margin: 5,
-  },
-  submitBtnText: {
-    color: white,
-    fontSize: 22,
-    textAlign: 'center',
-  },
+    minWidth: "70%",
+    margin:10,
+    textAlign: 'center', 
+   },
+
 })
 
 

@@ -31,7 +31,7 @@ export default class Decks extends Component {
                     {Object.keys(decks).map((index) => {
                         const { title, questions } = decks[index]
                         return (
-                            <TouchableOpacity style={styles.touchableOpacity} key={index}
+                            <TouchableOpacity style={styles.touchableOpacity} //key={index}
                                 onPress={() =>
                                     this.props.navigation.navigate('Deck', {
                                         title,
@@ -70,5 +70,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
 })
+
 
 
