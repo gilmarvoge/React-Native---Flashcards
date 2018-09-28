@@ -6,6 +6,9 @@ import { FontAwesome } from '@expo/vector-icons'
 import AddDeck from '../views/AddDeck'
 import Deck from '../views/Deck'
 import Decks from '../views/Decks'
+import AddCard from '../views/AddCard'
+import Quiz from '../views/Quiz'
+
 
 const Tabs = createMaterialTopTabNavigator({
     Home: {
@@ -57,6 +60,29 @@ export default MainNavigator = createStackNavigator({
           }
         }
       },
+      AddCard: {
+        screen: AddCard,
+        navigationOptions: {
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: purple
+          }
+        }
+      },
+      Quiz: {
+        screen: Quiz,
+        navigationOptions: {
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: purple
+          }
+        }
+      },
+
+
+
+ 
+      
     /*EntryDetail: {
       screen: EntryDetail,
       navigationOptions: {

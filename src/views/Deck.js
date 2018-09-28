@@ -6,7 +6,9 @@ import { purple, white, gray, blue, black } from '../utils/colors'
 
 
 export default class Deck extends Component {
-
+  static navigationOptions = ({ navigation }) => {
+    return { title: navigation.state.params.title };
+};
 
   render() {
 
@@ -19,15 +21,31 @@ export default class Deck extends Component {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.countQuestions}> {questions.length === 1 ? questions.length + ' Card' : questions.length + ' Cards'}</Text>
         <View style={styles.containerButtons}>
-      <Text style={styles.buttons}>Add Card</Text>
-      <Text style={styles.buttons}>Start Quiz</Text>
+          <TouchableOpacity  //key={index}
+            onPress={() =>
+              this.props.navigation.navigate('AddCard', {
+                
+              })
+            }>
+            <Text style={styles.buttons}>Add Card</Text>
+
+          </TouchableOpacity>
+          <TouchableOpacity  //key={index}
+           onPress={() =>
+            this.props.navigation.navigate('Quiz', {
+              title,
+              questions
+            })
+          }>
+           <Text style={styles.buttons}>Start Quiz</Text>
+          </TouchableOpacity>
+        </View >
       </View>
-      </View>
+
 
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -48,8 +66,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   containerButtons: {
-    margin:50,
-   },
+    margin: 50,
+  },
   buttons: {
     backgroundColor: purple,
     color: white,
@@ -57,12 +75,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 7,
     height: 45,
-    minWidth: "70%",
-    margin:10,
-    textAlign: 'center', 
-   },
+    minWidth: "100%",
+    margin: 10,
+    textAlign: 'center',
+  },
 
 })
+
 
 
 

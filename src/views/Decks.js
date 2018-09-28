@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity, FlatList } from 'react-native'
 import { purple, white, gray, blue, black } from '../utils/colors'
 import { AppLoading } from 'expo'
-import { getDecks } from '../storage/storage'
+import { getDecks } from '../storage/storageApi'
 
 
 
@@ -14,6 +14,14 @@ export default class Decks extends Component {
     }
 
     componentDidMount() {
+       this.fetchDecks();
+    }
+
+    updateDecks = (title) => {
+        saveDeckTitle(this.state.deckname.trim(title)).then(this.fetchDecks)
+    }
+
+    fetchDecks() {
         getDecks()
             .then((decks) => { this.setState({ decks, loading: true }) })
     }
@@ -69,7 +77,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingHorizontal: 15,
     },
+    contentContainer: {
+        flex: 1,
+        paddingVertical: 20
+    }
 })
+
+
 
 
 

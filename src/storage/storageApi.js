@@ -57,10 +57,11 @@ export const getDeck = id =>
 
 //dado um único argumento title, ele adiciona-o aos baralhos.
 export const saveDeckTitle = title => {
+    console.log("ENTROU PARA SALVA"+title)
     return getDecks()
         .then(decks => {
-            const newDecks = { ...decks, [title]: { title, questions: [] } };
-            return AsyncStorage.setItem(STORAGE_NAME, JSON.stringify(newDecks));
+            const addDeck = { ...decks, [title]: { title, questions: [] } };
+            return AsyncStorage.setItem(FLASHCARDS_STORAGE, JSON.stringify(addDeck));
         })
         .catch(ex => console.error(ex));
 };
@@ -71,7 +72,7 @@ export const addCardToDeck = (title, card) => {
         .then(decks => {
             if (decks && decks[title]) {
                 decks[title].questions.push(card);
-                AsyncStorage.setItem(STORAGE_NAME, JSON.stringify(decks));
+                AsyncStorage.setItem(FLASHCARDS_STORAGE, JSON.stringify(decks));
             }
         })
         .catch(ex => console.error(ex));
