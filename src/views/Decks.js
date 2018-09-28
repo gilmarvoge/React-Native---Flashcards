@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 //import { getDecks } from '../utils/api'
-import { View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity, FlatList } from 'react-native'
-import { purple, white, gray, blue, black } from '../utils/colors'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
+import { gray, black } from '../utils/colors'
+import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import { getDecks } from '../storage/storageApi'
 
-
-
-export default class Decks extends Component {
+class Decks extends Component {
     state = {
         decks: {},
         loading: false
@@ -22,6 +21,7 @@ export default class Decks extends Component {
     }
 
     fetchDecks() {
+       // this.props.dispatch(editFileName(this.props.fileSelected.toString(), this.state.filename))
         getDecks()
             .then((decks) => { this.setState({ decks, loading: true }) })
     }
@@ -84,6 +84,8 @@ const styles = StyleSheet.create({
 })
 
 
+function mapStateToProps (decks) {
+    return { decks }
+  }
 
-
-
+export default connect(mapStateToProps)(Decks)
