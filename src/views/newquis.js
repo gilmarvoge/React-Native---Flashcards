@@ -7,8 +7,7 @@ export default class App extends React.Component {
     state = {
         questions: [],
         cardsCount: 0,
-        corrects: 0,
-        wrongs: 0,
+        countCorrects:0,
         index: 0,
         showQuestion: true
     };
@@ -27,24 +26,23 @@ export default class App extends React.Component {
             cardsCount: this.props.navigation.state.params.questions.length
         })
     }
-    onCorrectPress = () =>
-        this.setState({
-            showQuestion: true,
-            corrects: this.state.corrects + 1,
-            index: this.state.index + 1
-        });
-    onWrongPress = () =>
-        this.setState({
-            showQuestion: true,
-            wrongs: this.state.wrongs + 1,
-            index: this.state.index + 1
-        });
+
+    onPressButtons = (correctIncorrect) => {
+        if (correctIncorrect === 'correctPress') 
+            this.setState({
+                showQuestion: true, countCorrects: this.state.countCorrects + 1, index: this.state.index + 1
+            })
+        else if (correctIncorrect === 'incorrectPress')
+            this.setState({
+                showQuestion: true, countCorrects: this.state.countCorrects - 1, index: this.state.index + 1
+            })
+    }
+
     newGame = () => {
         this.setState({
             questions: [],
             cardsCount: 0,
-            corrects: 0,
-            wrongs: 0,
+            countCorrects:0,
             index: 0,
             showQuestion: true
         });
@@ -77,10 +75,10 @@ export default class App extends React.Component {
                     ? '...'
                     : this.state.questions[this.state.index].answer}
             </Text>
-            <TouchableOpacity style={styles.correctButton} onPress={this.onCorrectPress}>
+            <TouchableOpacity style={styles.correctButton} onPress={()=> this.onPressButtons('correctPress')}>   
                 <Text style={styles.txtButtonChoose}>Correct</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.wrongButton} onPress={this.onWrongPress}>
+            <TouchableOpacity style={styles.wrongButton} onPress={()=> this.onPressButtons('incorrectPress')}>
                 <Text style={styles.txtButtonChoose}>Incorrect</Text>
             </TouchableOpacity>
         </View>
@@ -94,7 +92,7 @@ export default class App extends React.Component {
                 .catch(err => console.error(err));
 
             const correctPercent = Math.round(
-                this.state.corrects / this.state.cardsCount * 100
+                this.state.countCorrects / this.state.cardsCount * 100
             );
             return (
                 <View style={styles.views}>
@@ -130,9 +128,9 @@ export default class App extends React.Component {
                     <Text style={styles.title}>{title}</Text>
 
                     <Text style={styles.cardsCount}>
-                        {this.state.corrects}{' '}
-                        {this.state.corrects === 1 ? 'correct' : 'correct'} e{' '}
-                        {this.state.wrongs} {this.state.wrongs === 1 ? 'error' : 'errors'}
+                        {this.state.countCorrects}{' '}
+                        {this.state.countCorrects === 1 ? 'correct' : 'correct'} e{' '}
+                        {this.state.countCorrects} {this.state.countCorrects === 1 ? 'error' : 'errors'}
                     </Text>
                     {this.state.questions.length > this.state.index && (
                         <Text style={styles.cardsCount}>

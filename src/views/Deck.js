@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     padding: 10,
     borderRadius: 7,
-    height: 45,
+    height: 55,
     minWidth: "100%",
     margin: 10,
     textAlign: 'center',
