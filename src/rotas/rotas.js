@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform} from 'react-native'
+import { Platform } from 'react-native'
 import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import { purple, white } from '../utils/colors'
 import { FontAwesome } from '@expo/vector-icons'
@@ -10,21 +10,22 @@ import AddCard from '../views/AddCard'
 import Quiz from '../views/Quiz'
 
 const Tabs = createMaterialTopTabNavigator({
-    Home: {
-      screen: Decks,
-      navigationOptions: {
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
-      },
+  Home: {
+    screen: Decks,
+    navigationOptions: {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
     },
-    AddDeck: {
-      screen: AddDeck,
-      navigationOptions: {
-        tabBarLabel: 'Add Deck',
-        tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
-      },
+  },
+  AddDeck: {
+    screen: AddDeck,
+    navigationOptions: {
+      tabBarLabel: 'Add Deck',
+      tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
     },
-        }, {
+  },
+},
+  {
     navigationOptions: {
       header: null
     },
@@ -45,40 +46,39 @@ const Tabs = createMaterialTopTabNavigator({
       }
     }
   })
-  
+
 export default MainNavigator = createStackNavigator({
-    Home: {
-      screen: Tabs,
-      navigationOptions: {
-        header: null
+  Home: {
+    screen: Tabs,
+    navigationOptions: {
+      header: null
     },
-    },
-    Deck: {
-        screen: Deck,
-        navigationOptions: {
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: purple
-          }
-        }
-      },
-      AddCard: {
-        screen: AddCard,
-        navigationOptions: {
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: purple
-          }
-        }
-      },
-      Quiz: {
-        screen: Quiz,
-        navigationOptions: {
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: purple
-          }
-        }
-      },
-  })
-  
+  },
+  Deck: {
+    screen: Deck,
+    navigationOptions: {
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  },
+})
