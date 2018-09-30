@@ -1,11 +1,11 @@
 # Flashcards
-APP Mobile desenvolvido em ReactNative que permite que usuários estudem uma coleção de flashcards.
+Mobile App developed in React Native that allows users to study a collection of flashcards.
 
 ### Instaling
 
 ```
 clone git https://github.com/gilmarvoge/flashcards.git
-#para aplicação
+
 -cd flashcards
 -yarn install
 -yarn start
@@ -22,9 +22,9 @@ clone git https://github.com/gilmarvoge/flashcards.git
 - Users should be notified to remind them to study if they did not do it on the day.
 
 ### Aditional functionality
-#### Redux 
+Redux 
 - A JavaScript framework for managing and maintaining application state usually used in conjunction with other frameworks to build applications.
-#### AsyncStorage 
+AsyncStorage 
 - AsyncStorage is React Native's API for storing data persistently over the device.  
 
 ![](Home.png)
