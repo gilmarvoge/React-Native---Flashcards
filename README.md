@@ -24,6 +24,7 @@ clone git https://github.com/gilmarvoge/flashcards.git
 ### Aditional functionality
 Redux 
 - A JavaScript framework for managing and maintaining application state usually used in conjunction with other frameworks to build applications.
+
 AsyncStorage 
 - AsyncStorage is React Native's API for storing data persistently over the device.  
 
