@@ -2,19 +2,16 @@ import React from 'react'
 import { View, } from 'react-native'
 import AppStatusBar from './src/components/appStatusBar'
 import { purple } from './src/utils/colors'
-import { setInitialDataStorage } from './src/storage/storageApi'
 import { setLocalNotification } from './src/utils/helpers'
 import MainNavigator from './src/rotas/rotas'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import reducer from './src/store/reducers'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './src/store/reducers/index'
 
 export default class App extends React.Component {
 
   componentDidMount() {
-    setInitialDataStorage()
-    setLocalNotification()
-
+     setLocalNotification()
   }
 
   render() {
@@ -24,7 +21,7 @@ export default class App extends React.Component {
           <AppStatusBar backgroundColor={purple} barStyle="light-content" />
           <MainNavigator />
         </View>
-      </Provider>
+        </Provider>
     )
   }
 }

@@ -1,43 +1,33 @@
 import React, { Component } from 'react';
 import { Alert, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { purple, white, gray, blue, black } from '../utils/colors'
+import { connect } from 'react-redux'
+import { purple, white, black } from '../utils/colors'
 import { saveDeckTitle } from '../storage/storageApi'
-
-
+import { addDeck } from '../store/actions/index'
 
 class AddDeck extends Component {
- 
-   state = { deckname: '' }
-  
+  componentWillMount() {
+    this.setState({
+      deck: ''
+    })
+  }
 
-   updateDecks  () {
-    //console.log("T I T LE PRA SALVAR" + this.state.deckname)
-     this.props.onUpdateDecks(this.state.deckName.trim())
-      .then(() => {
-        this.props.navigation.goBack()
-        //this.props.navigation.state.params.onGoBack(this.state.deckName.trim())
-      
-       // this.setState({ deckname: '' })
-      })  
+  addDeck = () => {
+    const title = this.state
+    if (!title.deck) {
+      Alert.alert('Deck Name cannot be empty')
+    } else {
+      const newDeck = { [title.deck]: { title: title.deck, questions: [] } };
+      this.props.dispatch(addDeck(newDeck))
+      saveDeckTitle(newDeck)
+      this.props.navigation.goBack()
+    }
   }
 
   cancelNewDeck = () => this.props.navigation.goBack();
 
-  handleChange = (target) => {
-    this.setState({deckname: target  });
-}
-
-shouldComponentUpdate(nextProps, nextState) {
-  const currentTouched = this.state.touched;
-  const nextTouched = nextState.touched;
-
-  // Re-render when the user has focused or unfocused the text field
-  return (currentTouched !== nextTouched);
-}
-
-
   render() {
-    const {deckname} = this.state;
+    const { deck } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -45,19 +35,17 @@ shouldComponentUpdate(nextProps, nextState) {
          </Text>
         <View style={styles.nameDeckInputContainer}>
           <TextInput style={styles.nameDeckInput}
-            defaultValue={deckname}
-            onChangeText={this.handleChange}
-           // onChangeText={(deckname) => this.setState({ deckname })}
+            value={deck}
+            onChangeText={deck => this.setState({ deck })}
           />
         </View>
         <View style={styles.touchableOpacityContainer}>
           <TouchableOpacity  //key={index}
-            onPress={() => { this.updateDecks() }}>
+            onPress={this.addDeck}>
             <Text style={styles.submit}>Submit</Text>
-
           </TouchableOpacity>
           <TouchableOpacity  //key={index}
-            onPress={() => { this.cancelNewDeck() }}>
+            onPress={this.cancelNewDeck}>
             <Text style={styles.submit}>Cancel</Text>
           </TouchableOpacity>
         </View >
@@ -66,8 +54,7 @@ shouldComponentUpdate(nextProps, nextState) {
   }
 }
 
-export default AddDeck;
-
+export default connect()(AddDeck)
 
 const styles = StyleSheet.create({
   container: {
@@ -107,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     padding: 10,
     borderRadius: 7,
-    height: 45,
+    height: 55,
     minWidth: "100%",
     margin: 10,
     textAlign: 'center',

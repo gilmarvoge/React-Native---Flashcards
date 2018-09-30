@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
 import { Alert, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { purple, white, gray, blue, black } from '../utils/colors'
-import { saveDeckTitle } from '../storage/storageApi'
-
-
+import { purple, white, black } from '../utils/colors'
+import { addCardToDeck } from '../storage/storageApi'
+import { addCard } from '../store/actions/index'
+import { connect } from 'react-redux';
 
 class AddDeck extends Component {
- 
-   state = { deckname: '' }
-  
+  state = {
+    question: '', answer: ''
+  };
 
-   updateDecks  () {
-    //console.log("T I T LE PRA SALVAR" + this.state.deckname)
-     this.props.onUpdateDecks(this.state.deckName.trim())
-      .then(() => {
-        this.props.navigation.goBack()
-        //this.props.navigation.state.params.onGoBack(this.state.deckName.trim())
-      
-       // this.setState({ deckname: '' })
-      })  
+  static navigationOptions = ({ navigation }) => {
+    return { title: navigation.state.params.title };
+  };
+
+  addNewCard = () => {
+    const { question, answer } = this.state;
+    const { title, questions } = this.props.navigation.state.params;
+
+    if (question === '') {
+      Alert.alert('Question cannot be empty');
+      return;
+    }
+    if (answer === '') {
+      Alert.alert('Answer cannot be empty');
+      return;
+    }
+
+    const card = { title, questions, question, answer };
+    this.props.dispatch(addCard(card))
+    addCardToDeck({
+      card: { question, answer },
+      deckTitle: title
+    })
+    this.props.navigation.goBack()
   }
 
-  cancelNewDeck = () => this.props.navigation.goBack();
-
-  handleChange = (target) => {
-    this.setState({deckname: target  });
-}
-
-shouldComponentUpdate(nextProps, nextState) {
-  const currentTouched = this.state.touched;
-  const nextTouched = nextState.touched;
-
-  // Re-render when the user has focused or unfocused the text field
-  return (currentTouched !== nextTouched);
-}
-
+  cancelNewCard = () => this.props.navigation.goBack();
 
   render() {
-    const {deckname} = this.state;
+    const { question, answer } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
@@ -45,29 +47,27 @@ shouldComponentUpdate(nextProps, nextState) {
          </Text>
         <View style={styles.nameDeckInputContainer}>
           <TextInput style={styles.nameDeckInput}
-            defaultValue={deckname}
-            onChangeText={this.handleChange}
-           // onChangeText={(deckname) => this.setState({ deckname })}
-          />
+            value={question}
+            onChangeText={question => this.setState({ question })} />
         </View>
         <Text style={styles.text}>
           Insert a answer
          </Text>
         <View style={styles.nameDeckInputContainer}>
           <TextInput style={styles.nameDeckInput}
-            defaultValue={deckname}
-            onChangeText={this.handleChange}
-           // onChangeText={(deckname) => this.setState({ deckname })}
-          />
+            value={answer}
+            onChangeText={answer => this.setState({ answer })} />
         </View>
         <View style={styles.touchableOpacityContainer}>
-          <TouchableOpacity  //key={index}
-            onPress={() => { this.updateDecks() }}>
-            <Text style={styles.submit}>Submit</Text>
+          <TouchableOpacity
+            onPress={this.addNewCard}
+          >
+            <Text style={styles.buttons}>Submit</Text>
           </TouchableOpacity>
-          <TouchableOpacity  //key={index}
-            onPress={() => { this.cancelNewDeck() }}>
-            <Text style={styles.submit}>Cancel</Text>
+          <TouchableOpacity
+            onPress={this.cancelNewCard}
+          >
+            <Text style={styles.buttons}>Cancel</Text>
           </TouchableOpacity>
         </View >
       </View >
@@ -75,8 +75,7 @@ shouldComponentUpdate(nextProps, nextState) {
   }
 }
 
-export default AddDeck;
-
+export default connect()(AddDeck);
 
 const styles = StyleSheet.create({
   container: {
@@ -105,23 +104,21 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     width: 330,
     fontSize: 20,
-
   },
   touchableOpacityContainer: {
     margin: 30
   },
-  submit: {
+  buttons: {
     backgroundColor: purple,
     color: white,
     fontSize: 22,
     padding: 10,
     borderRadius: 7,
-    height: 45,
+    height: 55,
     minWidth: "100%",
     margin: 10,
     textAlign: 'center',
   },
-
 })
 
 

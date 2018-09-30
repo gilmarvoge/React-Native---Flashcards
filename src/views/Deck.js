@@ -1,51 +1,50 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native'
+import { purple, white, gray, black } from '../utils/colors'
 
-
-import { View, Button, Text, StyleSheet, ScrollView, Platform, TouchableOpacity, FlatList } from 'react-native'
-import { purple, white, gray, blue, black } from '../utils/colors'
-
-
-export default class Deck extends Component {
+class Deck extends Component {
   static navigationOptions = ({ navigation }) => {
     return { title: navigation.state.params.title };
-};
+  };
 
   render() {
-
-    const { title, questions } = this.props.navigation.state.params;
-
-
+    const { title } = this.props.navigation.state.params;
+    const questions = this.props.decks[title] && this.props.decks[title].questions;
     return (
-
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.countQuestions}> {questions.length === 1 ? questions.length + ' Card' : questions.length + ' Cards'}</Text>
         <View style={styles.containerButtons}>
-          <TouchableOpacity  //key={index}
+          <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate('AddCard', {
-                
+                title,
+                questions
               })
             }>
             <Text style={styles.buttons}>Add Card</Text>
-
           </TouchableOpacity>
-          <TouchableOpacity  //key={index}
-           onPress={() =>
-            this.props.navigation.navigate('Quiz', {
-              title,
-              questions
-            })
-          }>
-           <Text style={styles.buttons}>Start Quiz</Text>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('Quiz', {
+                title,
+                questions
+              })
+            }>
+            <Text style={styles.buttons}>Start Quiz</Text>
           </TouchableOpacity>
         </View >
       </View>
-
-
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  decks: state
+})
+
+export default connect(mapStateToProps)(Deck);
 
 const styles = StyleSheet.create({
   container: {
@@ -75,11 +74,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 7,
     height: 55,
-    minWidth: "100%",
+    minWidth: "120%",
     margin: 10,
     textAlign: 'center',
   },
-
 })
 
 

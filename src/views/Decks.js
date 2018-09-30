@@ -1,45 +1,27 @@
-import React, { Component } from 'react';
-//import { getDecks } from '../utils/api'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
-import { gray, black } from '../utils/colors'
-import { connect } from 'react-redux'
-import { AppLoading } from 'expo'
-import { getDecks } from '../storage/storageApi'
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+import { getDecks } from '../store/actions/index';
+import { fetchDecks } from '../storage/storageApi';
+import { gray, black, white } from '../utils/colors'
 
-class Decks extends Component {
-    state = {
-        decks: {},
-        loading: false
-    }
+class Decks extends React.Component {
 
     componentDidMount() {
-       this.fetchDecks();
-    }
-
-    updateDecks = (title) => {
-        saveDeckTitle(this.state.deckname.trim(title)).then(this.fetchDecks)
-    }
-
-    fetchDecks() {
-       // this.props.dispatch(editFileName(this.props.fileSelected.toString(), this.state.filename))
-        getDecks()
-            .then((decks) => { this.setState({ decks, loading: true }) })
+        const { dispatch } = this.props;
+        fetchDecks().then(decks => dispatch(getDecks(decks)))
+            .then(() => this.setState(() => ({ ready: true })));
     }
 
     render() {
-        const { loading, decks } = this.state
-
-        if (!loading) {
-            return <AppLoading />
-        }
-
+        const { decks } = this.props
         return (
             <View style={styles.container}>
                 <ScrollView >
                     {Object.keys(decks).map((index) => {
                         const { title, questions } = decks[index]
                         return (
-                            <TouchableOpacity style={styles.touchableOpacity} //key={index}
+                            <TouchableOpacity style={styles.touchableOpacity} key={index}
                                 onPress={() =>
                                     this.props.navigation.navigate('Deck', {
                                         title,
@@ -53,9 +35,15 @@ class Decks extends Component {
                     })}
                 </ScrollView>
             </View>
-        )
+        );
     }
 }
+
+const mapStateToProps = (state) => ({
+    decks: state
+})
+
+export default connect(mapStateToProps)(Decks);
 
 const styles = StyleSheet.create({
     container: {
@@ -63,7 +51,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     touchableOpacity: {
-        paddingVertical: 15
+        paddingVertical: 15,
+        backgroundColor: white,
+        margin: 5,
+        minWidth: "100%",
     },
     title: {
         textAlign: 'center',
@@ -74,7 +65,7 @@ const styles = StyleSheet.create({
     countQuestions: {
         textAlign: 'center',
         color: gray,
-        fontSize: 15,
+        fontSize: 20,
         paddingHorizontal: 15,
     },
     contentContainer: {
@@ -82,10 +73,3 @@ const styles = StyleSheet.create({
         paddingVertical: 20
     }
 })
-
-
-function mapStateToProps (decks) {
-    return { decks }
-  }
-
-export default connect(mapStateToProps)(Decks)

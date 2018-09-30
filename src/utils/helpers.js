@@ -10,7 +10,7 @@ export const clearLocalNotifications = () =>
 
 const createNotification = () => {
   return {
-    title: 'Aprenda algo novo hoje!',
+    title: 'Aprenda algo novo!',
     body: '👋 Não esqueça de jogar um quiz hoje!',
     android: { sound: true, sticky: false }
   };
@@ -38,7 +38,6 @@ export const setLocalNotification = () => {
                   repeat: 'day'
                 }
               );
-
               AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
             }
           })

@@ -9,7 +9,6 @@ import Decks from '../views/Decks'
 import AddCard from '../views/AddCard'
 import Quiz from '../views/Quiz'
 
-
 const Tabs = createMaterialTopTabNavigator({
     Home: {
       screen: Decks,
@@ -50,6 +49,9 @@ const Tabs = createMaterialTopTabNavigator({
 export default MainNavigator = createStackNavigator({
     Home: {
       screen: Tabs,
+      navigationOptions: {
+        header: null
+    },
     },
     Deck: {
         screen: Deck,
@@ -78,19 +80,5 @@ export default MainNavigator = createStackNavigator({
           }
         }
       },
-
-
-
- 
-      
-    /*EntryDetail: {
-      screen: EntryDetail,
-      navigationOptions: {
-        headerTintColor: white,
-        headerStyle: {
-          backgroundColor: purple,
-        }
-      }
-    }*/
   })
   

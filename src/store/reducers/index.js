@@ -1,20 +1,21 @@
-import { RECEIVE_DECKS, ADD_DECK, GET_DECKS } from '../actions'
+import { GET_DECKS, ADD_DECK, ADD_CARD } from '../types';
 
-import initialDeckData from '../../storage/storageApi'
-
-function decks(state = initialDeckData, action) {
+function decks(state = {}, action) {
+	const decks = action.decks
+	const deck = action.deck
 	switch (action.type) {
-		case GET_DECKS : 
+		case GET_DECKS:
+			return { ...state, ...decks }
+		case ADD_DECK:
+			return { ...state, ...deck };
+		case ADD_CARD:
+			const { title, questions, question, answer } = action.card;
+			const newCard = JSON.parse(JSON.stringify(questions)).concat([{ question, answer }]);
 			return {
-			...state, 
-			...action.decks
-		}
-	    case ADD_DECK :
-			return {
-			...state,
-			...action.deck
-		}
-		default : 
+				...state,
+				[title]: { ...state[title], questions: newCard },
+			};
+		default:
 			return state
 	}
 }

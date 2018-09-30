@@ -7,8 +7,7 @@ export default class App extends React.Component {
     state = {
         questions: [],
         cardsCount: 0,
-        corrects: 0,
-        wrongs: 0,
+        countCorrects: 0,
         index: 0,
         showQuestion: true
     };
@@ -27,45 +26,47 @@ export default class App extends React.Component {
             cardsCount: this.props.navigation.state.params.questions.length
         })
     }
-    onCorrectPress = () =>
-        this.setState({
-            showQuestion: true,
-            corrects: this.state.corrects + 1,
-            index: this.state.index + 1
-        });
-    onWrongPress = () =>
-        this.setState({
-            showQuestion: true,
-            wrongs: this.state.wrongs + 1,
-            index: this.state.index + 1
-        });
+
+    onPressButtons = (correctIncorrect) => {
+        if (correctIncorrect === 'correctPress')
+            this.setState({
+                showQuestion: true, countCorrects: this.state.countCorrects + 1, index: this.state.index + 1
+            })
+        else if (correctIncorrect === 'incorrectPress') {
+            if (this.state.countCorrects === 0) {
+                this.setState({ showQuestion: true, index: this.state.index + 1 })
+            }
+            else
+                this.setState({
+                    showQuestion: true, countCorrects: this.state.countCorrects - 1, index: this.state.index + 1
+                })
+        }
+    }
+
     newGame = () => {
         this.setState({
             questions: [],
             cardsCount: 0,
-            corrects: 0,
-            wrongs: 0,
+            countCorrects: 0,
             index: 0,
             showQuestion: true
         });
         this.updateDeck();
     };
 
-    renderQuestion = question => (
+    renderQuestion = () => (
         <View style={styles.views}>
+            <Text style={styles.questionText}>
+                {this.state.questions.length <= this.state.index
+                    ? '...'
+                    : this.state.questions[this.state.index].question}
+            </Text>
             <TouchableOpacity style={styles.questionBtn} onPress={() => this.setState({ showQuestion: false })}>
-                <Text style={styles.questionText}>
-                    {this.state.questions.length <= this.state.index
-                        ? '...'
-                        : this.state.questions[this.state.index].question}
-                </Text>
-                {this.state.index === 0 && (
-                    <Text style={styles.cardsCount}>(Touch the question to see the answer)</Text>
-                )}
+                <Text style={styles.answerButton}>Answer</Text>
             </TouchableOpacity>
         </View>
     );
-    renderAnwser = anwser => (
+    renderAnwser = () => (
         <View style={styles.views}>
             <Text style={styles.questionText}>
                 {this.state.questions.length <= this.state.index
@@ -77,10 +78,10 @@ export default class App extends React.Component {
                     ? '...'
                     : this.state.questions[this.state.index].answer}
             </Text>
-            <TouchableOpacity style={styles.correctButton} onPress={this.onCorrectPress}>
+            <TouchableOpacity style={styles.correctButton} onPress={() => this.onPressButtons('correctPress')}>
                 <Text style={styles.txtButtonChoose}>Correct</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.wrongButton} onPress={this.onWrongPress}>
+            <TouchableOpacity style={styles.wrongButton} onPress={() => this.onPressButtons('incorrectPress')}>
                 <Text style={styles.txtButtonChoose}>Incorrect</Text>
             </TouchableOpacity>
         </View>
@@ -88,13 +89,11 @@ export default class App extends React.Component {
 
     showResult = () => {
         if (this.state.cardsCount > 0) {
-            //usuario completou um jogo, apaga o alerta de hoje e cria novamente para amanhã
             clearLocalNotifications()
                 .then(setLocalNotification)
                 .catch(err => console.error(err));
-
             const correctPercent = Math.round(
-                this.state.corrects / this.state.cardsCount * 100
+                this.state.countCorrects / this.state.cardsCount * 100
             );
             return (
                 <View style={styles.views}>
@@ -121,18 +120,14 @@ export default class App extends React.Component {
     };
 
     render = () => {
-
         const { title, questions } = this.props.navigation.state.params;
-
         return (
             <ScrollView style={{ flex: 1 }} >
                 <View style={styles.views}>
                     <Text style={styles.title}>{title}</Text>
 
                     <Text style={styles.cardsCount}>
-                        {this.state.corrects}{' '}
-                        {this.state.corrects === 1 ? 'correct' : 'correct'} e{' '}
-                        {this.state.wrongs} {this.state.wrongs === 1 ? 'error' : 'errors'}
+                        Score:{' '}{this.state.countCorrects}
                     </Text>
                     {this.state.questions.length > this.state.index && (
                         <Text style={styles.cardsCount}>
@@ -153,8 +148,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
-
         alignItems: 'center',
     },
     views: {
@@ -164,56 +157,47 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        padding: 10,//10 20 0,  style={styles.questionBtn}
-        margin: 10,//10 20 0,
-        fontSize: 30, //30,
+        padding: 10,
+        margin: 10,
+        fontSize: 30,
     },
     cardsCount: {
         fontSize: 18,
         color: gray,
         paddingBottom: 20,
     },
+    answerButton: {
+        fontSize: 25,
+        color: green,
+        paddingBottom: 20,
+    },
     questionBtn: {
-        //backgroundColor: white,
-        color: black,
         padding: 20,
         minWidth: '90%',
         alignItems: 'center',
         margin: 5,
     },
     correctButton: {
-        //color: white,           //style={styles.correctButton}
-        // backgroundColor: green,
-        // padding: 20,
-        // textAlign: 'center',
-        // alignItems: 'center',
-        // margin: 5,
-        // borderRadius: 10,
-        // height: 70,
-        // minWidth: "70%",
         backgroundColor: green,
         color: white,
         fontSize: 22,
         padding: 10,
         borderRadius: 7,
-        height: 50,
-        minWidth: "60%",
+        height: 55,
+        minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         textAlign: 'center',
         alignItems: 'center',
     },
     wrongButton: {
-        // color: white,       //style={styles.wrongButton}
         backgroundColor: red,
         color: white,
         fontSize: 22,
         padding: 10,
         borderRadius: 7,
-        height: 50,
-        minWidth: "60%",
+        height: 55,
+        minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         textAlign: 'center',
         alignItems: 'center',
     },
@@ -223,37 +207,29 @@ const styles = StyleSheet.create({
         fontSize: 22,
         padding: 10,
         borderRadius: 7,
-        height: 50,
-        minWidth: "60%",
+        height: 55,
+        minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         textAlign: 'center',
         alignItems: 'center',
     },
     txtButton: {
-        // color: white,          //style={styles.txtButton}
         fontSize: 24,
     },
     txtButtonChoose: {
         fontSize: 24,
         color: white,
     },
-    questionText: {           //style={styles.anwserText}
+    questionText: {
         color: black,
         fontSize: 24,
         margin: 5,
         textAlign: 'center'
     },
-    anwserText: {           //style={styles.anwserText}
+    anwserText: {
         color: purple,
         fontSize: 24,
         margin: 5,
         textAlign: 'center'
-    }, cancelBtn: {           //style={styles.cancelBtn}
-        backgroundColor: gray,
-        padding: 20,
-        minWidth: '90%',
-        alignItems: 'center',
-        margin: 5,
     },
 })
