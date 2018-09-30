@@ -25,15 +25,20 @@ class Deck extends Component {
             }>
             <Text style={styles.buttons}>Add Card</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('Quiz', {
-                title,
-                questions
-              })
-            }>
-            <Text style={styles.buttons}>Start Quiz</Text>
-          </TouchableOpacity>
+          {questions.length > 0 ? (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('Quiz', {
+                  title,
+                  questions
+                })
+              }>
+              <Text style={styles.buttons}>Start Quiz</Text>
+            </TouchableOpacity>
+          ) : (
+              <Text style={styles.txtButton}>
+                Add new cards before play...
+              </Text>)}
         </View >
       </View>
     )
@@ -76,6 +81,10 @@ const styles = StyleSheet.create({
     height: 55,
     minWidth: "120%",
     margin: 10,
+    textAlign: 'center',
+  },
+  txtButton: {
+    fontSize: 24,
     textAlign: 'center',
   },
 })

@@ -1,6 +1,8 @@
 # Flashcards
 Mobile App developed in React Native that allows users to study a collection of flashcards.
 
+Platform tested: Android
+
 ### Instaling
 
 ```

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { getDecks } from '../store/actions/index';
 import { fetchDecks } from '../storage/storageApi';
@@ -12,12 +12,12 @@ class Decks extends React.Component {
         fetchDecks().then(decks => dispatch(getDecks(decks)))
             .then(() => this.setState(() => ({ ready: true })));
     }
-
+    
     render() {
         const { decks } = this.props
         return (
             <View style={styles.container}>
-                <ScrollView >
+                <ScrollView>
                     {Object.keys(decks).map((index) => {
                         const { title, questions } = decks[index]
                         return (

@@ -33,13 +33,7 @@ export default class App extends React.Component {
                 showQuestion: true, countCorrects: this.state.countCorrects + 1, index: this.state.index + 1
             })
         else if (correctIncorrect === 'incorrectPress') {
-            if (this.state.countCorrects === 0) {
-                this.setState({ showQuestion: true, index: this.state.index + 1 })
-            }
-            else
-                this.setState({
-                    showQuestion: true, countCorrects: this.state.countCorrects - 1, index: this.state.index + 1
-                })
+            this.setState({ showQuestion: true, index: this.state.index + 1 })
         }
     }
 
@@ -106,16 +100,16 @@ export default class App extends React.Component {
                     <TouchableOpacity style={styles.correctButton} onPress={this.newGame}>
                         <Text style={styles.txtButtonChoose}>New game</Text>
                     </TouchableOpacity>
-                    <Text style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
-                        <Text>Back</Text>
-                    </Text>
+                    <TouchableOpacity style={styles.backButton} onPress={this.newGame}>
+                        <Text style={styles.txtButtonChoose}>Back</Text>
+                    </TouchableOpacity>
                 </View>
             );
         } else
             return (
                 <Text style={styles.txtButton}>
                     Add new cards before play...
-        </Text>
+                </Text>
             );
     };
 
@@ -152,7 +146,6 @@ const styles = StyleSheet.create({
     },
     views: {
         flex: 1,
-
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -179,38 +172,29 @@ const styles = StyleSheet.create({
     },
     correctButton: {
         backgroundColor: green,
-        color: white,
-        fontSize: 22,
         padding: 10,
         borderRadius: 7,
         height: 55,
         minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         alignItems: 'center',
     },
     wrongButton: {
         backgroundColor: red,
-        color: white,
-        fontSize: 22,
         padding: 10,
         borderRadius: 7,
         height: 55,
         minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         alignItems: 'center',
     },
     backButton: {
         backgroundColor: purple,
-        color: white,
-        fontSize: 22,
         padding: 10,
         borderRadius: 7,
         height: 55,
         minWidth: "70%",
         margin: 10,
-        textAlign: 'center',
         alignItems: 'center',
     },
     txtButton: {

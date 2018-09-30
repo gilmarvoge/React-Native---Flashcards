@@ -20,6 +20,7 @@ class AddDeck extends Component {
       const newDeck = { [title.deck]: { title: title.deck, questions: [] } };
       this.props.dispatch(addDeck(newDeck))
       saveDeckTitle(newDeck)
+      this.setState({ deck: '' })
       this.props.navigation.goBack()
     }
   }
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 7,
     height: 55,
-    minWidth: "100%",
+    minWidth: "120%",
     margin: 10,
     textAlign: 'center',
   },
