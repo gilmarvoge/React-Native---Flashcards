@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, } from 'react-native'
 import { clearLocalNotifications, setLocalNotification } from '../utils/helpers';
 import { purple, white, gray, green, red, black } from '../utils/colors'
 
-export default class App extends React.Component {
+export default class Quiz extends PureComponent {
     state = {
+        title:'',
         questions: [],
         cardsCount: 0,
         countCorrects: 0,
         index: 0,
-        showQuestion: true
+        showQuestion: true,
+        
     };
 
     static navigationOptions = ({ navigation }) => {
@@ -22,6 +24,7 @@ export default class App extends React.Component {
 
     updateDeck = () => {
         this.setState({
+            title: this.props.navigation.state.params.title,
             questions: this.props.navigation.state.params.questions,
             cardsCount: this.props.navigation.state.params.questions.length
         })
@@ -39,6 +42,7 @@ export default class App extends React.Component {
 
     newGame = () => {
         this.setState({
+            title: '',
             questions: [],
             cardsCount: 0,
             countCorrects: 0,
@@ -114,7 +118,7 @@ export default class App extends React.Component {
     };
 
     render = () => {
-        const { title, questions } = this.props.navigation.state.params;
+        const { title, questions } = this.state;
         return (
             <ScrollView style={{ flex: 1 }} >
                 <View style={styles.views}>
@@ -123,12 +127,12 @@ export default class App extends React.Component {
                     <Text style={styles.cardsCount}>
                         Score:{' '}{this.state.countCorrects}
                     </Text>
-                    {this.state.questions.length > this.state.index && (
+                    {questions.length > this.state.index && (
                         <Text style={styles.cardsCount}>
                             Question {this.state.index + 1} of {this.state.cardsCount}
                         </Text>
                     )}
-                    {this.state.questions.length <= this.state.index
+                    {questions.length <= this.state.index
                         ? this.showResult()
                         : this.state.showQuestion
                             ? this.renderQuestion()
